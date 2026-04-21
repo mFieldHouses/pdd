@@ -1,10 +1,28 @@
 #include "GPSInterface.h"
 
-GPSClass GPSInterface::GPS = GPSClass();
-HardwareSerial GPSInterface::gpsSerial = HardwareSerial(2);
+//GPSClass GPSInterface::GPS = GPSClass();
+HardwareSerial GPS = HardwareSerial(2);
 
-void GPSClass::init() {
-  GPSInterface::gpsSerial.begin(9600, SERIAL_8N1, 22, 23);
+void GPSInterface::init() {
+  GPS.begin(9600, SERIAL_8N1, 22, 23);
+}
+
+void GPSInterface::loop() {
+  while (GPS.available()) {
+    String line = GPS.readStringUntil('\n');
+
+    if (line.startsWith("$GNGGA")) {
+      GPSInterface::GPSPoint new_point;
+      GPSInterface::nmeaGGAToGPSPoint(line, new_point);
+
+      SystemTerminalApp.printLine(GPSInterface::GPSPointToString(new_point));
+
+      if (new_point.valid) {
+      SDCard.appendFile("/positions.csv", GPSPointToCSV(new_point).c_str());
+      //appendLogLine("appended line to SD");
+    }
+    }
+  }
 }
 
 void GPSInterface::nmeaGGAToGPSPoint(String gga_string, GPSPoint& output_point) {

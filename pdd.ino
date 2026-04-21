@@ -1,53 +1,43 @@
-#include "DisplayInterface.h"
-using namespace DisplayInterface;
-
-#include "TouchScreenInterface.h"
-using namespace TouchScreenInterface;
-
-#include "SDCardInterface.h"
-using namespace SDCardInterface;
+#include "AppClass.h"
+#include "ViewportClass.h"
 
 #include "System.h"
 
+#include "DisplayInterface.h"
+#include "TouchScreenInterface.h"
+#include "SDCardInterface.h"
 #include "GPSInterface.h"
-using namespace GPSInterface;
+
+#include "AppContainerApp.h" // This app always runs and provides a viewport for other apps and the statusbar on top.
+
+#include "AppMenuApp.h" // This is the "home screen" of the device.
+
+#include "SystemTerminalApp.h"
 
 void setup() {
-  Serial.begin(115200);
-
-  DisplayInterfaceObj.init();
-  touchscreen_init();
-  SDCard.init();
   System.init();
-  GPS.init();
 
+  DisplayInterface::init();
+  TouchScreenInterface::init();
+  SDCardInterface::init();
+  GPSInterface::init();
 }
 
-int16_t rgbToInt(float r, float b, float g) {
-  return 0;
-}
+// int16_t rgbToInt(float r, float b, float g) {
+//   return 0;
+// }
 
 void loop() {
+  System.loop();
+
+  DisplayInterface::loop();
+  TouchScreenInterface::loop();
+  SDCardInterface::loop();
+  GPSInterface::loop();
   // if (ts.tirqTouched() && ts.touched()) {
   //   TS_Point point = ts.getPoint();
   //   appendLogLine(String(point.x));
   //   delay(100);
   // }
-
-  while (gpsSerial.available()) {
-    String line = gpsSerial.readStringUntil('\n');
-
-    if (line.startsWith("$GNGGA")) {
-      GPSPoint new_point;
-      nmeaGGAToGPSPoint(line, new_point);
-
-      SystemTerminal.printLine(GPSPointToString(new_point));
-
-      if (new_point.valid) {
-      SDCard.appendFile("/positions.csv", GPSPointToCSV(new_point).c_str());
-      //appendLogLine("appended line to SD");
-    }
-    }
-  }
 
 }

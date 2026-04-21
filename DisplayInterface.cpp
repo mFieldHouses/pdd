@@ -1,11 +1,14 @@
 #include "DisplayInterface.h"
 
-TFT_eSPI DisplayInterface::Display = TFT_eSPI();
-DisplayInterfaceClass DisplayInterface::DisplayInterfaceObj = DisplayInterfaceClass();
+TFT_eSPI Display = TFT_eSPI();
 
-void DisplayInterfaceClass::init() {
-  DisplayInterface::Display.init();
-  DisplayInterface::Display.setRotation(1);
-  DisplayInterface::Display.fillScreen(TFT_BLACK);
-  DisplayInterface::Display.setTextColor(TFT_WHITE, TFT_BLACK);
+void DisplayInterface::init() {
+  Display.init();
+  Display.setRotation(1);
+  Display.fillScreen(TFT_BLACK);
+  Display.setTextColor(TFT_WHITE, TFT_BLACK);
+}
+
+void DisplayInterface::loop() {
+  
 }

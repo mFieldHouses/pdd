@@ -7,10 +7,14 @@
 #define XPT2046_CS 33
 
 SPIClass TouchScreenInterface::mySpi = SPIClass(VSPI);
-XPT2046_Touchscreen TouchScreenInterface::ts(XPT2046_CS, XPT2046_IRQ);
+XPT2046_Touchscreen Touchscreen(XPT2046_CS, XPT2046_IRQ);
 
-void TouchScreenInterface::touchscreen_init() {
-  mySpi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
-  ts.begin(mySpi);
-  ts.setRotation(1);
+void TouchScreenInterface::init() {
+  TouchScreenInterface::mySpi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
+  Touchscreen.begin(TouchScreenInterface::mySpi);
+  Touchscreen.setRotation(1);
+}
+
+void TouchScreenInterface::loop() {
+  
 }

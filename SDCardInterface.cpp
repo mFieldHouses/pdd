@@ -1,20 +1,21 @@
 #include "SDCardInterface.h"
-#include "System.h"
 
-SDCardClass SDCardInterface::SDCard = SDCardClass();
+SDCardClass SDCard = SDCardClass();
 
-void SDCardClass::init() {
+bool SDCardInterface::SD_card_mounted = false;
+
+void SDCardInterface::init() {
   // SD card
   if (!SD.begin()) {
     Serial.println("Card Mount Failed");
-    SystemTerminal.printLine("Card Mount Failed");
-    has_SD_card = false;
+    SystemTerminalApp.printLine("Card Mount Failed");
+    SD_card_mounted = false;
     return;
   }
-  SystemTerminal.printLine("Card Mount Successful");
+  SystemTerminalApp.printLine("Card Mount Successful");
   uint8_t cardType = SD.cardType();
   
-  has_SD_card = true;
+  SD_card_mounted = true;
 
   Serial.print("SD Card Type: ");
   if (cardType == CARD_MMC) {
@@ -28,8 +29,12 @@ void SDCardClass::init() {
   }
   
   if (!SD.exists("/positions.csv")) { 
-    writeFile("/positions.csv", "count, timestamp, latitude, longitude, altitude, tags\n"); 
+    SDCard.writeFile("/positions.csv", "count, timestamp, latitude, longitude, altitude, tags\n"); 
   }
+}
+
+void SDCardInterface::loop() {
+  
 }
 
 void SDCardClass::listDir(const char *dirname, uint8_t levels) {

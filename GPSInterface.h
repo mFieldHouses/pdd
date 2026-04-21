@@ -1,15 +1,18 @@
 #pragma once
 
-#include <HardwareSerial.h>
+#include <Arduino.h>
 
-class GPSClass {
-  public:
-    void init();
-};
+#include <HardwareSerial.h>
+#include "SystemTerminalApp.h"
+#include "SDCardInterface.h"
+
+// class GPSClass {
+  // double getCurrentLongitude();
+  // double getCurrentLatitude();
+// };
 
 namespace GPSInterface {
-  extern GPSClass GPS;
-  extern HardwareSerial gpsSerial;
+  // extern GPSClass GPS;
 
   struct GPSPoint {
     bool valid = false;
@@ -29,4 +32,9 @@ namespace GPSInterface {
   String GPSPointToString(GPSPoint& point);
   String GPSPointToCSV(GPSPoint& point);
   String formatNMEA(const String& nmea_string);
+
+  void init();
+  void loop();
 }
+
+extern HardwareSerial GPS;

@@ -2,16 +2,9 @@
 
 #include <TFT_eSPI.h>
 
-class DisplayInterfaceClass {
-
-  public:
-    void init();
-
-};
-
 namespace DisplayInterface {
-  //void display_init();
-
-  extern DisplayInterfaceClass DisplayInterfaceObj;
-  extern TFT_eSPI Display;
+  void init();
+  void loop();
 }
+
+extern TFT_eSPI Display;

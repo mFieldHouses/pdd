@@ -1,12 +1,14 @@
 #pragma once
 
+#include <Arduino.h>
+
 #include "FS.h"
 #include "SD.h"
 
+#include "SystemTerminalApp.h"
+
 class SDCardClass {
   public:
-    void init();
-
     void listDir(const char *dirname, uint8_t levels);
     void createDir(const char *path);
     void removeDir(const char *path);
@@ -15,10 +17,13 @@ class SDCardClass {
     bool appendFile(const char *path, const char *message);
     void renameFile(const char *path1, const char *path2);
     void deleteFile(const char *path);
-
-    bool has_SD_card = false;
 };
 
 namespace SDCardInterface {
-  extern SDCardClass SDCard;
+  extern bool SD_card_mounted;
+  
+  void init();
+  void loop();
 }
+
+extern SDCardClass SDCard;

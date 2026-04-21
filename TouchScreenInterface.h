@@ -4,8 +4,10 @@
 #include "SPI.h"
 
 namespace TouchScreenInterface {
-  extern SPIClass mySpi;
-  extern XPT2046_Touchscreen ts;
+  void init();
+  void loop();
 
-  void touchscreen_init();
+  extern SPIClass mySpi;
 }
+
+extern XPT2046_Touchscreen Touchscreen;
