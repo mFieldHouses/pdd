@@ -5,6 +5,7 @@
 #include "AppClass.h"
 #include "AppMenuApp.h"
 #include "AppContainerApp.h"
+#include "StatusBarApp.h"
 
 // class SystemTerminalClass {
 //   private:
@@ -22,7 +23,7 @@ class SystemClass {
     void init();
     void loop();
 
-    void launchApp(AppClass* app);
+    void launchApp(AppClass* app, bool standalone);
     void closeApp();
 
     AppClass* currentApp = nullptr; // Should only really be an AppContainerApp, but can be standalone apps as well.

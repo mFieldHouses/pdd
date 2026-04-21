@@ -15,6 +15,8 @@
 #include "SystemTerminalApp.h"
 
 void setup() {
+  Serial.begin(115200);
+  Serial.println("main setup");
   System.init();
 
   DisplayInterface::init();
@@ -28,6 +30,7 @@ void setup() {
 // }
 
 void loop() {
+  Serial.println("main loop");
   System.loop();
 
   DisplayInterface::loop();

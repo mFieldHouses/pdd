@@ -3,16 +3,23 @@
 #include <Arduino.h>
 #include <vector>
 
-class SystemTerminalAppClass {
+#include "AppClass.h"
+
+class SystemTerminalAppClass : public AppClass {
   public:
-    void loop();
+    SystemTerminalAppClass();
+
     void printLine(const String& line);
+
+  protected:
+    virtual void loop() override;
+    virtual void setup() override;
 
   private:
     void draw();
 
     std::vector<String> log_lines;
-    const int MAX_LOG_LINES = 10;
+    const int MAX_LOG_LINES = 30;
 };
 
 extern SystemTerminalAppClass SystemTerminalApp;

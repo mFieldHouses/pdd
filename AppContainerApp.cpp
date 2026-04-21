@@ -2,8 +2,14 @@
 
 AppContainerApp MainAppContainer = AppContainerApp();
 
-void AppContainerApp::setup() {
+void AppContainerApp::setContainedApp(AppClass* app) {
+  Serial.println("set contained app");
+  this->containedApp = app;
 
+  app->viewport = subViewport;
+}
+
+void AppContainerApp::setup() {
 }
 
 void AppContainerApp::loop() {
