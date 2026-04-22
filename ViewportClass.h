@@ -1,6 +1,11 @@
 #pragma once
 
+#include <Arduino.h>
+#include <vector>
+
 #include "DisplayInterface.h"
+
+class ButtonClass;
 
 class ViewportClass {
   private:
@@ -16,11 +21,23 @@ class ViewportClass {
               v = v->parent_viewport;
           }
       }
-  
+
+    ViewportClass* parent_viewport = nullptr;
+    std::vector<ViewportClass*> child_viewports;
+
+    std::vector<ButtonClass*> child_buttons;
 
   public:
     bool is_root_viewport = true;
-    ViewportClass* parent_viewport = nullptr;
+
+    void setParentViewport(ViewportClass* new_parent_viewport);
+    ViewportClass* getParentViewport();
+
+    void registerChildViewport(ViewportClass*);
+    void deregisterChildViewport(ViewportClass*);
+
+    void registerButton(ButtonClass*);
+    void deregisterButton(ButtonClass*);
 
     inline void drawString(const String& string, int32_t x, int32_t y, uint8_t font) {
         if (x < -10 || x > this->size_x || y < -10 || y > this->size_y) {
@@ -38,6 +55,11 @@ class ViewportClass {
       Display.drawFastHLine(x, y, w, color);
     }
 
+    inline void drawRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color) {
+      resolveCoords(x, y);
+      Display.drawRect(x, y, w, h, color);
+    }
+
     inline void setTextColor(uint16_t fgcolor, uint16_t bgcolor) {
       this->text_foreground_color = fgcolor;
       this->text_background_color = bgcolor;
@@ -48,6 +70,8 @@ class ViewportClass {
     int getOffsetX();
     int getOffsetY();
 
+    bool isGlobalPointWithin(int32_t x, int32_t y, uint r);
+
     // Offsets are relative to parent viewport. If this Viewport is a root Viewport, offsets will have no effect.
     int offset_y = 0;
     int offset_x = 0;
@@ -55,6 +79,10 @@ class ViewportClass {
     int size_x = 10;
     int size_y = 10;
 
+    void fingerDown(int32_t x, int32_t y, uint pressure);
+    void fingerUp();
+
+    friend class ButtonClass;
 };
 
 extern ViewportClass MainViewport;

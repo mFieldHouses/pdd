@@ -5,30 +5,31 @@ SDCardClass SDCard = SDCardClass();
 bool SDCardInterface::SD_card_mounted = false;
 
 void SDCardInterface::init() {
+  return;
   // SD card
   if (!SD.begin()) {
-    Serial.println("Card Mount Failed");
-    SystemTerminalApp.printLine("Card Mount Failed");
+    System.println("Card Mount Failed");
     SD_card_mounted = false;
     return;
   }
-  SystemTerminalApp.printLine("Card Mount Successful");
+  System.println("Card Mount Successful");
   uint8_t cardType = SD.cardType();
   
   SD_card_mounted = true;
 
-  Serial.print("SD Card Type: ");
+  System.println("SD Card Type: ");
   if (cardType == CARD_MMC) {
-    Serial.println("MMC");
+    System.println("MMC");
   } else if (cardType == CARD_SD) {
-    Serial.println("SDSC");
+    System.println("SDSC");
   } else if (cardType == CARD_SDHC) {
-    Serial.println("SDHC");
+    System.println("SDHC");
   } else {
-    Serial.println("UNKNOWN");
+    System.println("UNKNOWN");
   }
   
   if (!SD.exists("/positions.csv")) { 
+    System.println("created /positions.csv");
     SDCard.writeFile("/positions.csv", "count, timestamp, latitude, longitude, altitude, tags\n"); 
   }
 }

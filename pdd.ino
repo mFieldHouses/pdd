@@ -14,6 +14,8 @@
 
 #include "SystemTerminalApp.h"
 
+uint8_t loop_counter = 0;
+
 void setup() {
   Serial.begin(115200);
   Serial.println("main setup");
@@ -29,18 +31,38 @@ void setup() {
 //   return 0;
 // }
 
+void deferred_loop(int loop_counter) {
+  if (loop_counter % 2 == 0) {}
+  if (loop_counter % 3 == 0) {}
+  if (loop_counter % 4 == 0) {}
+  if (loop_counter % 5 == 0) {}
+  if (loop_counter % 6 == 0) {}
+  if (loop_counter % 10 == 0) {}
+  if (loop_counter % 12 == 0) {}
+  if (loop_counter % 15 == 0) {
+    TouchScreenInterface::loop();
+  }
+  if (loop_counter % 20 == 0) {}
+  if (loop_counter % 30 == 0) {
+  
+  }
+  if (loop_counter % 60 == 0) {
+    GPSInterface::loop();
+  }
+}
+
 void loop() {
   Serial.println("main loop");
   System.loop();
 
   DisplayInterface::loop();
-  TouchScreenInterface::loop();
+  // TouchScreenInterface::loop();
   SDCardInterface::loop();
-  GPSInterface::loop();
-  // if (ts.tirqTouched() && ts.touched()) {
-  //   TS_Point point = ts.getPoint();
-  //   appendLogLine(String(point.x));
-  //   delay(100);
-  // }
+  //GPSInterface::loop();
+
+  // System.println("Deferred loop: " + String(loop_counter));
+  deferred_loop(loop_counter);
+
+  loop_counter = (loop_counter + 1) % 60; // 60 is a number that can be divided by 2, 3, 4, 5, 6, 10, 12, 15, 20, 30 and 60 and thus has a nice set of perfectly fit loops
 
 }

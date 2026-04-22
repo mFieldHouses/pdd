@@ -1,15 +1,16 @@
 #include "SystemTerminalApp.h"
+
 #include "ViewportClass.h"
+#include "System.h"
 
 SystemTerminalAppClass SystemTerminalApp = SystemTerminalAppClass();
 
 SystemTerminalAppClass::SystemTerminalAppClass() {
-  // ViewportClass* newViewport_ptr = new ViewportClass();
-  // this->viewport = newViewport_ptr;
+  System.setTerminal(this);
 }
 
 void SystemTerminalAppClass::setup() {
-  printLine("SETUP TERMINAL APP");
+  println("SETUP TERMINAL APP");
 }
 
 void SystemTerminalAppClass::loop() {
@@ -17,8 +18,10 @@ void SystemTerminalAppClass::loop() {
   //printLine("terminal app loop");
 }
 
-void SystemTerminalAppClass::printLine(const String& line) {
-  log_lines.insert(log_lines.begin(), line);
+void SystemTerminalAppClass::println(const String& line) {
+  String _line = line + "                                                ";
+
+  log_lines.insert(log_lines.begin(), _line);
     
     if (log_lines.size() > MAX_LOG_LINES) {
       log_lines.pop_back();

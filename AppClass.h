@@ -1,13 +1,14 @@
 #pragma once
 
-#include "ViewportClass.h"
 #include <Arduino.h>
+
+class ViewportClass;
 
 class AppClass {
   public:
     AppClass();
 
-    void close();
+    virtual void quit();
 
   protected:
     virtual void loop();

@@ -30,6 +30,7 @@ namespace GPSInterface {
 
   void nmeaGGAToGPSPoint(String gga_string, GPSPoint& output_point);
   String GPSPointToString(GPSPoint& point);
+  String GPSPointTimeString(GPSPoint& point);
   String GPSPointToCSV(GPSPoint& point);
   String formatNMEA(const String& nmea_string);
 

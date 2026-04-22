@@ -1,5 +1,7 @@
 #include "AppClass.h"
 
+#include "ViewportClass.h"
+
 AppClass::AppClass() {
   Serial.println("New app created, viewport assigned");
   ViewportClass* newViewport_ptr = new ViewportClass();
@@ -10,6 +12,4 @@ void AppClass::loop() {}
 
 void AppClass::setup() {}
 
-void AppClass::close() {
-  
-}
+void AppClass::quit() {}

@@ -4,12 +4,13 @@
 #include <vector>
 
 #include "AppClass.h"
+#include "Terminal.h"
 
-class SystemTerminalAppClass : public AppClass {
+class SystemTerminalAppClass : public AppClass, public Terminal {
   public:
     SystemTerminalAppClass();
 
-    void printLine(const String& line);
+    void println(const String& line) override;
 
   protected:
     virtual void loop() override;

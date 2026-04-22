@@ -15,16 +15,13 @@ class AppContainerApp : public AppClass {
       subViewport->size_x = DisplayInterface::getDisplayWidth();
       subViewport->size_y = DisplayInterface::getDisplayHeight() - STATUS_BAR_HEIGHT;
       subViewport->offset_y = STATUS_BAR_HEIGHT;
-      subViewport->is_root_viewport = false;
-      subViewport->parent_viewport = &MainViewport;
+      subViewport->setParentViewport(&MainViewport);
 
       statusBarViewport = new ViewportClass();
-      statusBarViewport->size_x = DisplayInterface::getDisplayWidth();;
+      statusBarViewport->size_x = DisplayInterface::getDisplayWidth();
       statusBarViewport->size_y = STATUS_BAR_HEIGHT;
-      statusBarViewport->offset_y = 0;
       StatusBarApp.viewport = statusBarViewport;
-      statusBarViewport->is_root_viewport = false;
-      statusBarViewport->parent_viewport = &MainViewport;
+      statusBarViewport->setParentViewport(&MainViewport);
     }
 
     AppClass* containedApp = nullptr;

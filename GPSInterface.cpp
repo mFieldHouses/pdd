@@ -15,12 +15,12 @@ void GPSInterface::loop() {
       GPSInterface::GPSPoint new_point;
       GPSInterface::nmeaGGAToGPSPoint(line, new_point);
 
-      SystemTerminalApp.printLine(GPSInterface::GPSPointToString(new_point));
+      System.println(GPSInterface::GPSPointToString(new_point));
 
       if (new_point.valid) {
-      SDCard.appendFile("/positions.csv", GPSPointToCSV(new_point).c_str());
-      //appendLogLine("appended line to SD");
-    }
+        //SDCard.appendFile("/positions.csv", GPSPointToCSV(new_point).c_str());
+        //appendLogLine("appended line to SD");
+      }
     }
   }
 }
@@ -100,29 +100,58 @@ void GPSInterface::nmeaGGAToGPSPoint(String gga_string, GPSPoint& output_point) 
   }
 }
 
+String GPSInterface::GPSPointTimeString(GPSPoint &point) {
+  String time_h_str = String(point.time_h);
+  String time_m_str = String(point.time_m);
+  String time_s_str = String(point.time_s);
+
+  // Padding
+  if (time_h_str.length() == 1) {
+    time_h_str = "0" + time_h_str;
+  }
+
+  if (time_m_str.length() == 1) {
+    time_m_str = "0" + time_m_str;
+  }
+
+  if (time_s_str.length() == 1) {
+    time_s_str = "0" + time_s_str;
+  }
+
+  return time_h_str + ":" + time_m_str + ":" + time_s_str;
+}
+
 String GPSInterface::GPSPointToString(GPSPoint& point) {
   String result_string;
 
   if (point.valid) {
+    String lat_str = String(point.latitude, 6);
+    String lon_str = String(point.longitude, 6);
+
+    // Padding of strings
+    if (lat_str.length() < 11) {
+      for (int i = 0; i < 11 - lat_str.length(); i++) {
+        lat_str = "0" + lat_str;
+      }
+    }
+
+    if (lon_str.length() < 11) {
+      for (int i = 0; i < 11 - lon_str.length(); i++) {
+        lon_str = "0" + lon_str;
+      }
+    }
+
     result_string = "V) " + 
-    String(point.time_h) + 
-    ":" + 
-    String(point.time_m) +
-    ":" +
-    String(point.time_s) +
+    GPSPointTimeString(point) +
     " - " +
-    String(point.latitude, 6) + 
+    lat_str + 
     "/" + 
-    String(point.longitude, 6)
+    lon_str
     ;
   }
   else {
     result_string = "NV) " +
-    String(point.time_h) + 
-    ":" + 
-    String(point.time_m) +
-    ":" +
-    String(point.time_s) +
+    GPSPointTimeString(point) +
     " - Could not resolve position";
   }
   return result_string;
