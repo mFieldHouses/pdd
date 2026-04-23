@@ -52,12 +52,19 @@ class ViewportClass {
 
         resolveCoords(x, y);
         Display.setTextColor(this->text_foreground_color, this->text_background_color);
-        // Display.drawString(string, x, y, font);
+        //Serial.println("Drawing string: " + string);
+        Display.drawString(string, x, y, font);
     }
 
     inline void drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color) {
       resolveCoords(x, y);
       Display.drawFastHLine(x, y, w, color);
+    }
+
+    inline void fill(uint32_t color) {
+      int32_t x = 0, y = 0;
+      resolveCoords(x, y);
+      Display.fillRect(x, y, size_x, size_y, color);
     }
 
     inline void drawRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color) {
@@ -75,7 +82,7 @@ class ViewportClass {
     int getOffsetX();
     int getOffsetY();
 
-    bool isGlobalPointWithin(int32_t x, int32_t y, uint r);
+    bool isPointWithin(int32_t x, int32_t y, uint r);
 
     // Offsets are relative to parent viewport. If this Viewport is a root Viewport, offsets will have no effect.
     int offset_y = 0;

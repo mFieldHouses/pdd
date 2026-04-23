@@ -2,9 +2,20 @@
 
 #include "AppClass.h"
 
+class ButtonClass;
+
 class AppMenuApp : public AppClass {
   public:
-    void loop();
+    AppMenuApp();
+
+    void loop() override;
+    void setup() override;
+    void quit() override;
+    void draw() override;
+
+    ButtonClass* terminal_button;
+    ButtonClass* tracker_button;
+
 
 };
 

@@ -13,11 +13,12 @@ class SystemTerminalAppClass : public AppClass, public Terminal {
     void println(const String& line) override;
 
   protected:
-    virtual void loop() override;
-    virtual void setup() override;
+    void loop() override;
+    void setup() override;
+    void draw() override;
+    void quit() override;
 
   private:
-    void draw();
 
     std::vector<String> log_lines;
     const int MAX_LOG_LINES = 30;

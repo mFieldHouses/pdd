@@ -14,7 +14,11 @@
 
 #include "SystemTerminalApp.h"
 
+// #include "driver/gptimer.h"
+
 uint8_t loop_counter = 0;
+
+// timer_config_t target_config;
 
 void setup() {
   Serial.begin(115200);
@@ -26,6 +30,11 @@ void setup() {
   GPSInterface::init();
 
   System.init();
+
+  // Serial.println(target_config.alarm_en);
+  // Serial.println(target_config.auto_reload);
+  // Serial.println(target_config.clk_src);
+  // Serial.println(target_config.counter_dir);
 }
 
 // int16_t rgbToInt(float r, float b, float g) {

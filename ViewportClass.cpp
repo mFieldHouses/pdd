@@ -12,13 +12,10 @@ ViewportClass::ViewportClass(int viewport_id) {
   this->viewport_id = viewport_id;
 }
 
-bool ViewportClass::isGlobalPointWithin(int32_t x, int32_t y, uint r) {
-  int32_t global_offset_x = 0;
-  int32_t global_offset_y = 0;
-
-  resolveCoords(global_offset_x, global_offset_y);
-
-  return (x + r > global_offset_x && y + r > global_offset_y && x - r < global_offset_x + size_x && y - r < global_offset_y + size_y);
+bool ViewportClass::isPointWithin(int32_t px, int32_t py, uint pr) {
+  return !(
+    (px + pr < offset_x || px - pr > offset_x + size_x) || (py + pr < offset_y || py - pr > offset_y + size_y) // This doesn't yet work entirely as I want it to work
+  );
 }
 
 void ViewportClass::registerChildViewport(ViewportClass* child_viewport) {
@@ -92,28 +89,27 @@ void ViewportClass::fingerDown(int32_t x, int32_t y, uint pressure) {
 
   resolveCoords(tx, ty);
   
-  Display.drawRect(tx + 1, ty + 1, size_x - 2, size_y - 2, TFT_RED);
+  // Display.drawRect(tx + 1, ty + 1, size_x - 2, size_y - 2, TFT_RED);
   
   System.println("finger down in viewport " + String(viewport_id) + ": " + String(x) + ", " + String(y));
 
   for (ViewportClass* vp : child_viewports) {
-    if (vp->isGlobalPointWithin(x, y, 0)) {
+    if (vp->isPointWithin(x, y, TOUCH_RADIUS)) {
       System.println("propagating fingerDown to viewport " + String(vp->viewport_id));
       vp->fingerDown(x - vp->offset_x, y - vp->offset_y, pressure);
     }
   }
 
   for (ButtonClass* bt : child_buttons) {
-    if (bt->isGlobalPointWithin(x, y, TOUCH_RADIUS)) {
+    if (bt->isPointWithin(x, y, TOUCH_RADIUS)) {
       System.println("propagating fingerDown to button");
       bt->press(pressure);
     }
   }
 
-  resolveCoords(x,y);
-
-  Display.drawSpot(x, y, TOUCH_RADIUS, TFT_MAROON);
-  Display.drawSpot(x, y, 2, TFT_RED);
+  //resolveCoords(x,y);
+  // Display.drawSpot(x, y, TOUCH_RADIUS, TFT_MAROON);
+  // Display.drawSpot(x, y, 2, TFT_RED);
 }
 
 void ViewportClass::fingerUp() {

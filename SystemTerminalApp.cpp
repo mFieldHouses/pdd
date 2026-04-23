@@ -10,15 +10,14 @@ SystemTerminalAppClass::SystemTerminalAppClass() {
 }
 
 void SystemTerminalAppClass::setup() {
-  println("SETUP TERMINAL APP");
-
-  
+  System.println("terminal app setup");
 }
 
 void SystemTerminalAppClass::loop() {
-  //Serial.println("terminal loop func");
-  //printLine("terminal app loop");
+  //System.println("terminal app loop");
 }
+
+void SystemTerminalAppClass::quit() {}
 
 void SystemTerminalAppClass::println(const String& line) {
   String _line = line + "                                                ";
@@ -33,6 +32,15 @@ void SystemTerminalAppClass::println(const String& line) {
 }
 
 void SystemTerminalAppClass::draw() {
+  // Serial.println("draw() terminal");
+  // Serial.println(String(viewport == nullptr));
+  
+  if (viewport == nullptr) {
+    return;
+  }
+
+  //Serial.println("draw terminal app");
+
   for (int i = 0; i < log_lines.size(); i++) {
     
     if (i == log_lines.size() - 1) {
@@ -46,7 +54,4 @@ void SystemTerminalAppClass::draw() {
     String line = log_lines[i];
     viewport->drawString(line, 5, y + 5, 1);
   }
-
-    int x = 5;
-    int y = 10;
 }

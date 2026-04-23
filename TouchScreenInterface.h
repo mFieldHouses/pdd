@@ -6,9 +6,9 @@
 #define TOUCH_RADIUS 10
 
 // Values used for calibration/correction.
-#define TS_TOP 350
-#define TS_BOTTOM 3700
-#define TS_LEFT 300
+#define TS_TOP 330
+#define TS_BOTTOM 3770
+#define TS_LEFT 330
 #define TS_RIGHT 3700
 
 #define TS_WIDTH (TS_RIGHT - TS_LEFT)

@@ -1,12 +1,14 @@
 #include "AppContainerApp.h"
 
+#include "System.h"
+
 AppContainerApp MainAppContainer = AppContainerApp();
 
 void AppContainerApp::setContainedApp(AppClass* app) {
   Serial.println("set contained app");
   this->containedApp = app;
 
-  app->viewport = subViewport;
+  app->setViewport(subViewport);
 }
 
 void AppContainerApp::setup() {
@@ -17,13 +19,19 @@ void AppContainerApp::setup() {
   subViewport->setParentViewport(&MainViewport);
 
   statusBarViewport = new ViewportClass(2);
+  statusBarViewport->size_x = DisplayInterface::getDisplayWidth();
   statusBarViewport->size_y = STATUS_BAR_HEIGHT;
-  StatusBarApp.viewport = statusBarViewport;
+  StatusBarApp.setViewport(statusBarViewport);
   statusBarViewport->setParentViewport(&MainViewport);
 }
 
 void AppContainerApp::loop() {
   if (containedApp != nullptr) {
+    //System.println("appcontainer contained app loop");
     containedApp->loop();
   }
 }
+
+void AppContainerApp::quit() {}
+
+void AppContainerApp::draw() {}

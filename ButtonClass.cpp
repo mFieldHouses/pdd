@@ -1,43 +1,55 @@
 #include "ButtonClass.h"
+
+#include <functional>
 #include "DisplayInterface.h"
 #include "System.h"
+#include "ViewportClass.h"
+#include "AppClass.h"
 
-ButtonClass::ButtonClass() {
-  
+ButtonClass::ButtonClass(AppClass* parent_app) {
+  setParentApp(parent_app);
 }
 
 void ButtonClass::draw() {
-  //System.println("draw button");
-  parent_viewport->drawRect(offset_x, offset_y, size_x, size_y, TFT_WHITE);
+  // Serial.println("draw button");
+  if (visible && parent_app->getViewport()) {
+    parent_app->getViewport()->drawRect(offset_x, offset_y, size_x, size_y, TFT_WHITE);
+  }
 }
 
-bool ButtonClass::isGlobalPointWithin(int32_t px, int32_t py, uint pr) {
-  int32_t global_offset_x = offset_x;
-  int32_t global_offset_y = offset_y;
+void ButtonClass::drawFilled() {
+  //System.println("draw button");
+  if (visible && parent_app->getViewport()) {
+    parent_app->getViewport()->drawRect(offset_x, offset_y, size_x, size_y, TFT_RED);
+  }
+}
 
-  parent_viewport->resolveCoords(global_offset_x, global_offset_y);
-
-  
-
+bool ButtonClass::isPointWithin(int32_t px, int32_t py, uint pr) {
   return !(
-    (px + pr < global_offset_x || px - pr > global_offset_x + size_x) && (py + pr < global_offset_y || py - pr > global_offset_y + size_y) // This doesn't yet work entirely as I want it to work
+    (px + pr < offset_x || px - pr > offset_x + size_x) || (py + pr < offset_y || py - pr > offset_y + size_y) // This doesn't yet work entirely as I want it to work
   );
 }
 
-void ButtonClass::press(uint pressure) {
-  System.println("Button got pressed!");
+void ButtonClass::setPressedCallback(std::function<void(int)> func) {
+  pressed_callback = func;
 }
 
-void ButtonClass::setParentViewport(ViewportClass* new_parent_viewport) {
-  if (!new_parent_viewport) {
-    return;
+void ButtonClass::press(uint pressure) {
+  // System.println("Button got pressed!");
+
+  if (pressed_callback && visible) {
+    pressed_callback(pressure);
   }
-  
-  if (parent_viewport) {
-    parent_viewport->deregisterButton(this);
+}
+
+void ButtonClass::setParentApp(AppClass* new_parent_app) {
+  if (parent_app) {
+    parent_app->deregisterButton(this);
   }
 
-  new_parent_viewport->registerButton(this);
+  if (new_parent_app) {
+    new_parent_app->registerButton(this);
+  }
   
-  parent_viewport = new_parent_viewport;
+  parent_app = new_parent_app;
 }
