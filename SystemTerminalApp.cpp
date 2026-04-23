@@ -11,6 +11,8 @@ SystemTerminalAppClass::SystemTerminalAppClass() {
 
 void SystemTerminalAppClass::setup() {
   println("SETUP TERMINAL APP");
+
+  
 }
 
 void SystemTerminalAppClass::loop() {

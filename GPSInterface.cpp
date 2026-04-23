@@ -15,7 +15,7 @@ void GPSInterface::loop() {
       GPSInterface::GPSPoint new_point;
       GPSInterface::nmeaGGAToGPSPoint(line, new_point);
 
-      System.println(GPSInterface::GPSPointToString(new_point));
+      // System.println(GPSInterface::GPSPointToString(new_point));
 
       if (new_point.valid) {
         //SDCard.appendFile("/positions.csv", GPSPointToCSV(new_point).c_str());

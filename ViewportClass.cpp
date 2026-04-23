@@ -6,7 +6,11 @@
 #include "System.h"
 #include "ButtonClass.h"
 
-ViewportClass MainViewport = ViewportClass();
+ViewportClass MainViewport = ViewportClass(0);
+
+ViewportClass::ViewportClass(int viewport_id) {
+  this->viewport_id = viewport_id;
+}
 
 bool ViewportClass::isGlobalPointWithin(int32_t x, int32_t y, uint r) {
   int32_t global_offset_x = 0;
@@ -82,23 +86,34 @@ ViewportClass* ViewportClass::getParentViewport() {
 }
 
 void ViewportClass::fingerDown(int32_t x, int32_t y, uint pressure) {
-  //System.println("finger down in viewport: " + String(x) + ", " + String(y));
+  
+  int32_t tx = 0;
+  int32_t ty = 0;
+
+  resolveCoords(tx, ty);
+  
+  Display.drawRect(tx + 1, ty + 1, size_x - 2, size_y - 2, TFT_RED);
+  
+  System.println("finger down in viewport " + String(viewport_id) + ": " + String(x) + ", " + String(y));
 
   for (ViewportClass* vp : child_viewports) {
     if (vp->isGlobalPointWithin(x, y, 0)) {
-      //System.println("propagating fingerDown to viewport");
+      System.println("propagating fingerDown to viewport " + String(vp->viewport_id));
       vp->fingerDown(x - vp->offset_x, y - vp->offset_y, pressure);
     }
   }
 
   for (ButtonClass* bt : child_buttons) {
     if (bt->isGlobalPointWithin(x, y, TOUCH_RADIUS)) {
-      //System.println("propagating fingerDown to button");
+      System.println("propagating fingerDown to button");
       bt->press(pressure);
     }
   }
 
-  // Display.drawSpot(x, y, 7, TFT_RED);
+  resolveCoords(x,y);
+
+  Display.drawSpot(x, y, TOUCH_RADIUS, TFT_MAROON);
+  Display.drawSpot(x, y, 2, TFT_RED);
 }
 
 void ViewportClass::fingerUp() {

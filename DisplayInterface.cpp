@@ -1,5 +1,7 @@
 #include "DisplayInterface.h"
 
+#include "System.h"
+
 TFT_eSPI Display = TFT_eSPI();
 
 void DisplayInterface::init() {
@@ -10,10 +12,11 @@ void DisplayInterface::init() {
 }
 
 void DisplayInterface::loop() {
-  
+  // System.println(String("rotation is ") + String(Display.getRotation()));
 }
 
 int DisplayInterface::getDisplayHeight() {
+  System.println(String("rotation is ") + String(Display.getRotation()));
   if (Display.getRotation() % 2 == 1) {
     return TFT_WIDTH;
   }

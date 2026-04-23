@@ -1,3 +1,4 @@
+#include "DisplayInterface.h"
 #include "System.h"
 
 #include "AppClass.h"
@@ -10,13 +11,16 @@ SystemClass System = SystemClass();
 
 void SystemClass::init() {
   System.println("System init");
-  MainViewport.size_x = DISPLAY_WIDTH;
-  MainViewport.size_y = DISPLAY_HEIGHT;
+  MainViewport.size_x = DisplayInterface::getDisplayWidth();
+  MainViewport.size_y = DisplayInterface::getDisplayHeight();
   MainViewport.is_root_viewport = true;
 
+  MainAppContainer.setup();
   StatusBarApp.setup();
 
   launchApp(&SystemTerminalApp, false);
+
+  //println("Display dimensions: " + String(DisplayInterface::getDisplayWidth()) + ", " + String(DisplayInterface::getDisplayHeight()));
 }
 
 void SystemClass::loop() {

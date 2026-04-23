@@ -28,5 +28,4 @@ class StatusBarAppClass : public AppClass {
 };
 
 extern StatusBarAppClass StatusBarApp;
-
 extern ButtonClass test_button;

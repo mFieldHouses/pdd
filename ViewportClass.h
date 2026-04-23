@@ -28,7 +28,11 @@ class ViewportClass {
     std::vector<ButtonClass*> child_buttons;
 
   public:
+    ViewportClass(int);
+
     bool is_root_viewport = true;
+
+    int viewport_id = 0;
 
     void setParentViewport(ViewportClass* new_parent_viewport);
     ViewportClass* getParentViewport();
@@ -40,6 +44,7 @@ class ViewportClass {
     void deregisterButton(ButtonClass*);
 
     inline void drawString(const String& string, int32_t x, int32_t y, uint8_t font) {
+        //Serial.println("drawString with string " + string + " at position " + String(x) + ", " + String(y) + " at size " + String(font));
         if (x < -10 || x > this->size_x || y < -10 || y > this->size_y) {
           //Serial.println("cull string");
           return;
@@ -47,7 +52,7 @@ class ViewportClass {
 
         resolveCoords(x, y);
         Display.setTextColor(this->text_foreground_color, this->text_background_color);
-        Display.drawString(string, x, y, font);
+        // Display.drawString(string, x, y, font);
     }
 
     inline void drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color) {

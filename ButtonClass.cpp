@@ -17,6 +17,8 @@ bool ButtonClass::isGlobalPointWithin(int32_t px, int32_t py, uint pr) {
 
   parent_viewport->resolveCoords(global_offset_x, global_offset_y);
 
+  
+
   return !(
     (px + pr < global_offset_x || px - pr > global_offset_x + size_x) && (py + pr < global_offset_y || py - pr > global_offset_y + size_y) // This doesn't yet work entirely as I want it to work
   );

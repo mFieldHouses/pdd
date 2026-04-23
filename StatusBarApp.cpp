@@ -10,6 +10,9 @@ ButtonClass test_button = ButtonClass();
 
 void StatusBarAppClass::setup() {
   System.println("statusbar setup");
+
+  viewport->size_x = DisplayInterface::getDisplayWidth();
+
   test_button.offset_x = 200;
   test_button.offset_y = 2;
   test_button.size_x = 30;

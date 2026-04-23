@@ -19,12 +19,13 @@ uint8_t loop_counter = 0;
 void setup() {
   Serial.begin(115200);
   Serial.println("main setup");
-  System.init();
 
   DisplayInterface::init();
   TouchScreenInterface::init();
   SDCardInterface::init();
   GPSInterface::init();
+
+  System.init();
 }
 
 // int16_t rgbToInt(float r, float b, float g) {
@@ -52,7 +53,7 @@ void deferred_loop(int loop_counter) {
 }
 
 void loop() {
-  Serial.println("main loop");
+  //Serial.println("main loop");
   System.loop();
 
   DisplayInterface::loop();
